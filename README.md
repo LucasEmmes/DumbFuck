@@ -1,2 +1,2 @@
-# dumbfuck
+# DumbFuck
 DumbFuck - a BrainFuck Compiler
