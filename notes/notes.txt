@@ -1,0 +1,22 @@
+SPECIAL PURPOSE REGISTERS
+A2 B2 M A B C D1 D2
+0  1  2 3 4 5 6  7
+
+Occupy cells 0 through 7
+A2 is the left-most cell in the program
+All special purpose registers should be 0 before and after an instruction is run
+
+
+GENERAL PURPOSE REGISTERS
+R0 - R19
+Come right after SPR
+Occupy cells 8-20
+
+
+VARIABLES
+Variables are stored in cells 28 and onwards
+
+
+
+MOVEMENT
+All microinstructions start and end pointing to register A, or cell 3
