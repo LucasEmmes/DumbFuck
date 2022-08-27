@@ -8,16 +8,18 @@ functions = {}
 
 instructions = {}
 
-def micro_equals():
-    pass
+ptr_position = 0
 
-def micro_greater_than():
-    pass
+def check_a_equals_b_into_d():
+    return "[->-<]>>+<[>-<[-]]<"
 
-def micro_add():
+def check_a_greater_than_b_into_d():
+    return "[->[-[-<<+>>]>>-<<]<<[->>+<<]>>>>+<<<]>[-]<"
+
+def micro_add_a_and_b_into_c():
     return "[->>+<<]>[->+<]<"
 
-def micro_clear():
+def micro_clear_current_cell():
     return "[-]"
 
 def micro_setvalue(x):
@@ -26,8 +28,10 @@ def micro_setvalue(x):
     else:
         return x * "-"
 
-def micro_move_ptr(start, destination):
-    delta = parse_location(destination) - parse_location(start)
+def micro_move_ptr(destination):
+    global ptr_position
+    delta = parse_location(destination) - ptr_position
+    ptr_position = parse_location(destination)
     if delta == 0:
         return ""
     elif delta > 0:
@@ -62,9 +66,9 @@ def comp_copy(x, y):
 
 def comp_setvalue(x, val):
     i = ""
-    i += micro_move_ptr("#A2", x)
+    i += micro_move_ptr(x)
     i += micro_setvalue(val)
-    i += micro_move_ptr(x, "#A2")
+    i += micro_move_ptr("#A2")
     return i
 
 def comp_move(x, y):
@@ -107,13 +111,11 @@ def main():
     result = ""
     # First variable should be at cell 28
 
-    add_var("X", 2)
-    add_var("Y", 1)
-    # add_var("Z", 1)
 
-    result += comp_setvalue("X[0]", 100)
-    result += comp_move("X", "Y")
-
+    result += comp_setvalue("#A", 12)
+    result += comp_setvalue("#B", 12)
+    result += micro_move_ptr("#A")
+    result += check_a_greater_than_b_into_d()
     print(optimize(result))
 
 

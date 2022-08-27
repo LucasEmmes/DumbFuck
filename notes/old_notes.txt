@@ -1,0 +1,138 @@
+------------------------------------
+
+CMP A > B
+
+// REQUIRES: M, A, B, C
+// M, A, B WILL BE 0
+// C WILL BE 0 OR TRUE
+[->[-[-<<+>>]>-<]<<[->>+<<]>>>+<<]>[-]<
+
+// EXPLANATION
+[-> // Decrement A by 1 and move to B
+    // If B is still true
+    [-  // Decrement B by 1
+        // If B is still true
+        [-<<+>>] // Move what is left of B to M
+        >-< // Decrement C by 1
+    ]
+    <<  // Move to M
+    [->>+<<] // Move M to B
+    >>>+<<  // Increment C by 1
+    ]
+>[-]<   // Set B to 0
+
+-----------------------------------
+
+CMP A == B
+
+// REQUIRES: A2, B2, M, A, B, C
+// A AND B WILL BE 0
+// C WILL BE 0 OR 1
+[->-<]>>+<[>-<[-]]<
+
+// EXPLANATION
+
+[->-<]  // Decrement both until A is 0
+>>+<    // Increment C by 1
+// If B is not 0 (i.e. A != B)
+[>-<    // Decrement C by 1
+    [-] // Empty B
+]
+<       // Return home to A
+
+-----------------------------
+
+IF / ELSE
+
+// REQUIRES C, D
+// C AND D WILL BE 0
+>>[[-] foo() >-<]>+[- bar() ]<<<
+
+// EXPLANATION
+>> // Go to C
+// If true
+[
+    [-]     // Decrement C to 0
+    foo()   // Insert if function
+    >-<     // Decrement D by 1 (if C was 1, D (originally 0) will now be true)
+]
+>+  // Unconditionally move to D and increment by 1 (if C was 1, D will go from true back to 0. If C was 0, D (originally 0) will go to true)
+[
+    - // Decrement D by 1 (back to 0)
+    bar() // Insert else function
+]
+<<< // Move back to A
+
+------------------------------
+
+ADD A, B
+
+// REQUIRES A, B, C
+// A AND B WILL BE 0
+
+[->>+<<]>[->+<]<
+
+----------------------------
+
+SUB A, B
+
+// REQUIRES A, B, C
+// A AND B WILL BE 0
+// CAN UNDERFLOW
+
+[->>+<<]>[->-<]<
+
+------------------------------
+
+MUL A, B
+
+// REQUIRES A2, M, A, B, C
+// A2, M WILL BE 0
+// A AND B WILL BE UNTOUCHED
+// C WILL BE A*B
+
+>[-<<+<+>>>]<<[->>+<<]>>[-<[-<+>>>+<<]<[->+<]>>]<<<[->>>+<<<]>>
+
+// EXPLANATION
+
+// COPY B TO B2
+>[-<<+<+>>>]<<[->>+<<]>
+// FOR B TIMES
+>[-<
+    // COPY A INTO C
+    [-<+>>>+<<]<[->+<]>
+>]<
+// MOVE B2 INTO B AGAIN
+<<[->>>+<<<]>>
+
+-----------------------------
+
+
+
+-----------------------------
+
+COPY A TO A2 
+[-<+<<+>>>]<[->+<]>
+
+COPY B TO B2 
+>[-<<+<+>>>]<<[->>+<<]>
+
+COPY A2 TO A
+<<<[->>+>+<<<]>>[-<<+>>]>
+
+COPY B2 TO B
+<<[->+>>+<<<]>[-<+>]>
+
+MOVE A2 TO A
+<<<[->>>+<<<]>>>
+
+MOVE B2 TO B
+<<[->>>+<<<]>>
+
+
+
+
+
+
+// EXPLANATION
+[->[-[-<<+>>]>>-<<]<<[->>+<<]>>>>+<<<]>[-]<
