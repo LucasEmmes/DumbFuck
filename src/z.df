@@ -1,0 +1,13 @@
+.data
+    X = 10;
+    Y = 5;
+    Z;
+
+.funcs
+
+    foo:
+        MUL $X $Y $Z;
+
+.code
+
+    foo;
