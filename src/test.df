@@ -1,0 +1,13 @@
+.data
+    X = 10;
+
+.funcs
+    print_x {
+        PRT $X;
+    }
+
+.code
+    # Comment
+    MOV $X 10;  # Move immediate value 10 into cell X
+    
+    !print_x    # Call "print_x" function

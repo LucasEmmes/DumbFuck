@@ -19,25 +19,6 @@ def check_a_greater_than_b_into_d():
 def micro_add_a_and_b_into_c():
     return "[->>+<<]>[->+<]<"
 
-def micro_clear_current_cell():
-    return "[-]"
-
-def micro_setvalue(x):
-    if (x < 128):
-        return x * "+"
-    else:
-        return x * "-"
-
-def micro_move_ptr(destination):
-    global ptr_position
-    delta = parse_location(destination) - ptr_position
-    ptr_position = parse_location(destination)
-    if delta == 0:
-        return ""
-    elif delta > 0:
-        return ">"*delta
-    elif delta < 0:
-        return "<"*(-1*delta)
 
 def micro_move_cell_value(x, y):
     i = ""
