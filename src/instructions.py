@@ -1,3 +1,4 @@
+
 cell_ptr = 0
 addresses = {"#A2":0,"#B2":1,"#M":2,"#A":3,"#B":4,"#C":5,"#D":6,"#D2":7}
 next_var_address = len(addresses)
@@ -41,10 +42,8 @@ def META_GET_VARIABLE_ADDRESS(VAR_NAME):
 def COMMAND_MOV(X, Y):
     """Move contents of cell X into Y, clearing X and overwriting Y  
     Same as Y=X, X=0"""
-    return  COMMAND_SET(Y, 0)   +\
-            FORMULATE_FOR_LOOP(
-                X, 
-                1, 
+    return  COMMAND_SET(Y, 0)           +\
+            FORMULATE_FOR_LOOP(X, 1, 
                 "".join([
                     MICRO_PTR_GOTO(Y),
                     MICRO_INCREMENT(1),
@@ -53,8 +52,9 @@ def COMMAND_MOV(X, Y):
             )
 
 def COMMAND_ADD(X, Y, Z):
-    """Add X to Y, put result into Z"""
-    pass
+    """Add X to Y, put result into Z  
+    Same as Z = (X + Y)"""
+    return
 
 def COMMAND_SUB(X, Y, Z):
     """Subtract Y from X, put result into Z"""
@@ -118,12 +118,44 @@ def FORMULATE_FOR_LOOP(X, DECREMENT_AMOUNT, INSTRUCTIONS_LOOP):
 
 
 def ALU_ADD():
-    """Add A and B into C"""
-    pass
+    """Add A and B into C, consuming A and B"""
+    return  MICRO_PTR_GOTO(3)           +\
+            FORMULATE_FOR_LOOP(3, 1,
+                "".join([
+                    MICRO_PTR_GOTO(5),
+                    MICRO_INCREMENT(1),
+                    MICRO_PTR_GOTO(3),
+                ])
+            ) +\
+            MICRO_PTR_GOTO(4)           +\
+            FORMULATE_FOR_LOOP(4, 1,
+                "".join([
+                    MICRO_PTR_GOTO(5),
+                    MICRO_INCREMENT(1),
+                    MICRO_PTR_GOTO(4),
+                ])
+            )                           +\
+            MICRO_PTR_GOTO(3)
 
 def ALU_SUB():
     """Subtract B from A and put into C"""
-    pass
+    return  MICRO_PTR_GOTO(3)           +\
+            FORMULATE_FOR_LOOP(3, 1,
+                "".join([
+                    MICRO_PTR_GOTO(5),
+                    MICRO_INCREMENT(1),
+                    MICRO_PTR_GOTO(3),
+                ])
+            ) +\
+            MICRO_PTR_GOTO(4)           +\
+            FORMULATE_FOR_LOOP(4, 1,
+                "".join([
+                    MICRO_PTR_GOTO(5),
+                    MICRO_DECREMENT(1),
+                    MICRO_PTR_GOTO(4),
+                ])
+            )                           +\
+            MICRO_PTR_GOTO(3)
 
 def ALU_MUL():
     """Multiply X and Y and put into C"""
