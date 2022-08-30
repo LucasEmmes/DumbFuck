@@ -74,11 +74,15 @@ def COMMAND_MOD(X, Y, Z):
 
 def COMMAND_INP(X):
     """Take input from the console and store in X"""
-    pass
+    return  MICRO_PTR_GOTO(X)   +\
+            MICRO_INPUT()       +\
+            MICRO_PTR_GOTO(0)
 
 def COMMAND_OUT(X):
     """Print X to the console"""
-    pass
+    return  MICRO_PTR_GOTO(X)   +\
+            MICRO_OUTPUT()      +\
+            MICRO_PTR_GOTO(0)
 
 def COMMAND_SET(X, V):
     """Set X to value V"""
@@ -126,7 +130,7 @@ def ALU_ADD():
                     MICRO_INCREMENT(1),
                     MICRO_PTR_GOTO(3),
                 ])
-            ) +\
+            )                           +\
             MICRO_PTR_GOTO(4)           +\
             FORMULATE_FOR_LOOP(4, 1,
                 "".join([
@@ -146,7 +150,7 @@ def ALU_SUB():
                     MICRO_INCREMENT(1),
                     MICRO_PTR_GOTO(3),
                 ])
-            ) +\
+            )                           +\
             MICRO_PTR_GOTO(4)           +\
             FORMULATE_FOR_LOOP(4, 1,
                 "".join([
@@ -205,7 +209,8 @@ def MICRO_SETVALUE(N):
 
 def MICRO_INPUT():
     """Takes input from terminal and stores it in the current cell"""
-    pass
+    return ","
 
 def MICRO_OUTPUT():
     """Takes the current cell and outputs it to terminal"""
+    return "."
