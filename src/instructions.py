@@ -171,6 +171,7 @@ def ALU_DIV():
 
 def ALU_MODULO():
     """Calculates A modulo B and puts it into C"""
+    pass
 
 def ALU_CMP_A_GREATER_THAN_B():
     """Checks if A is larger than B, putting result into D"""
@@ -178,7 +179,24 @@ def ALU_CMP_A_GREATER_THAN_B():
 
 def ALU_CMP_A_EQUALS_B():
     """Checks if A is equal to B, putting result into D"""
-    pass
+    return  MICRO_PTR_GOTO(3)           +\
+            FORMULATE_FOR_LOOP(3, 1,
+                "".join([
+                    MICRO_PTR_GOTO(4),
+                    MICRO_DECREMENT(1),
+                    MICRO_PTR_GOTO(3),
+                ]))                     +\
+            MICRO_PTR_GOTO(5)           +\
+            MICRO_INCREMENT(1)          +\
+            MICRO_PTR_GOTO(4)           +\
+            FORMULATE_FOR_LOOP(4, 1,
+                "".join([
+                    MICRO_PTR_GOTO(5),
+                    MICRO_DECREMENT(1),
+                    MICRO_PTR_GOTO(4),
+                    MICRO_SETVALUE(0)
+                ]))                     +\
+            MICRO_PTR_GOTO(3)
 
 
 # ------------------------------------------------------------------------------------------------------------
