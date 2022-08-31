@@ -92,7 +92,26 @@ def COMMAND_SET(X, V):
 
 def COMMAND_CPY(X, Y):
     """Copy contents of cell X into Y, leaving X seemingly untouched and overwriting Y"""
-    pass
+    return
+
+
+# ------------------------------------------------------------------------------------------------------------
+# HELPING FUNCTIONS ------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------
+
+
+def HELPER_DISTRIBUTE_INTO(X, *args):
+    """Will take X and distribute it into multiple other cells"""
+    return  MICRO_PTR_GOTO(X)   +\
+            FORMULATE_FOR_LOOP(X, 1,
+                "".join([
+                    "".join([
+                        MICRO_PTR_GOTO(i)+
+                        MICRO_INCREMENT(1)
+                        for i in args
+                    ]),
+                    MICRO_PTR_GOTO(X)
+                ]))
 
 
 # ------------------------------------------------------------------------------------------------------------

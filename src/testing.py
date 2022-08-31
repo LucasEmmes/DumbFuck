@@ -13,9 +13,8 @@ def optimize(program):
 def main():
 
     print(optimize(
-        COMMAND_SET(3, 3) +
-        COMMAND_SET(4, 3)  +
-        ALU_CMP_A_EQUALS_B()
+        COMMAND_SET(0, 10) +
+        HELPER_DISTRIBUTE_INTO(0, 5, 6, 1, 2, 3, 4)
     ))
 
 if __name__ == '__main__':
