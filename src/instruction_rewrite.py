@@ -117,16 +117,17 @@ def FORMULATE_IF_ELSE(CONDITION, INSTRUCTIONS_IF, INSTRUCTIONS_ELSE):
     """Formulates an if/else statement"""
     pass
 
-def FORMULATE_FOR_LOOP(X, DECREMENT_AMOUNT, INSTRUCTIONS_LOOP):
+def FORMULATE_FOR_LOOP(X, DECREMENT_AMOUNT, INSTRUCTIONS_LOOP, FRONT_DEC = False):
     """Formulates a for-loop running over X and decrementing it DECREMENT_AMOUNT times each iteration.  
     WILL AUTOMATICALLY MOVE TO X BEFORE STARTING THE LOOP AND AT THE END OF LOOP"""
-    return  MICRO_PTR_GOTO(X)       +\
-            "["                     +\
-            MICRO_PTR_GOTO(-X)      +\
-            INSTRUCTIONS_LOOP       +\
-            MICRO_PTR_GOTO(X)       +\
-            "-"*DECREMENT_AMOUNT    +\
-            "]"                     +\
+    return  MICRO_PTR_GOTO(X)                               +\
+            "["                                             +\
+            ("-"*DECREMENT_AMOUNT if FRONT_DEC else "")     +\
+            MICRO_PTR_GOTO(-X)                              +\
+            INSTRUCTIONS_LOOP                               +\
+            MICRO_PTR_GOTO(X)                               +\
+            ("-"*DECREMENT_AMOUNT if not FRONT_DEC else "") +\
+            "]"                                             +\
             MICRO_PTR_GOTO(-X)
 
 
@@ -163,16 +164,28 @@ def ALU_MODULO():
 
 def ALU_CMP_A_GREATER_THAN_B():
     """Checks if A is larger than B, putting result into D"""
-    pass
+    return ">>>[->[-[-<<+>>]>>-<<]<<[->>+<<]>>>>+<<<]>[-]<<<<"
+    # return FORMULATE_FOR_LOOP(3, 1,
+    # "".join([
+    #     FORMULATE_FOR_LOOP(4, 1, "".join([
+    #         FORMULATE_FOR_LOOP(4, 0, "".join([
+    #             COMMAND_MOV(4, 2),
+    #             MICRO_DECREMENT(6, 1)
+    #         ]))
+    #     ]), True),
+    #     COMMAND_MOV(2, 4),
+    #     MICRO_INCREMENT(6, 1)
+    # ]), True) +\
+    # MICRO_SETVALUE(4, 0)
 
 def ALU_CMP_A_EQUALS_B():
     """Checks if A is equal to B, putting result into D"""
     return  FORMULATE_FOR_LOOP(3, 1, MICRO_DECREMENT(4, 1)) +\
-            MICRO_INCREMENT(5, 1)                           +\
+            MICRO_INCREMENT(6, 1)                           +\
             FORMULATE_FOR_LOOP(4, 0,
             "".join([
                 MICRO_SETVALUE(4, 0),
-                MICRO_DECREMENT(5, 1)
+                MICRO_DECREMENT(6, 1)
             ]))
 
 

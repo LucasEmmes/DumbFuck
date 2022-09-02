@@ -147,15 +147,20 @@ def RUN_TESTS():
     ]))
 
     # 13 Test alu a==b
-    test([0,0,0,0,0,1],
+    test([0,0,0,0,0,0,1],
     "".join([
         COMMAND_SET(3, 5),
         COMMAND_SET(4, 5),
         ALU_CMP_A_EQUALS_B()
-    # ]), True)
     ]))
 
-    # 14 Test 
+    # 14 Test a > b 
+    test([0,0,0,0,0,0,1],
+    "".join([
+        COMMAND_SET(3, 6),
+        COMMAND_SET(4, 5),
+        ALU_CMP_A_GREATER_THAN_B()
+    ]))
     
 
     # test([],
