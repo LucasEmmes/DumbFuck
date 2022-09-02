@@ -47,15 +47,27 @@ def COMMAND_MOV(X, Y):
 def COMMAND_ADD(X, Y, Z):
     """Add X to Y, put result into Z  
     Same as Z = (X + Y)"""
-    return
+    return  HELPER_DISTRIBUTE_INTO(X, 3)    +\
+            HELPER_DISTRIBUTE_INTO(Y, 4)    +\
+            ALU_ADD()                       +\
+            MICRO_SETVALUE(Z, 0)            +\
+            HELPER_DISTRIBUTE_INTO(5, Z)
 
 def COMMAND_SUB(X, Y, Z):
     """Subtract Y from X, put result into Z"""
-    pass
+    return  HELPER_DISTRIBUTE_INTO(X, 3)    +\
+            HELPER_DISTRIBUTE_INTO(Y, 4)    +\
+            ALU_SUB()                       +\
+            MICRO_SETVALUE(Z, 0)            +\
+            HELPER_DISTRIBUTE_INTO(5, Z)
 
 def COMMAND_MUL(X, Y, Z):
     """Multiply X with Y and put result into Z"""
-    pass
+    return  HELPER_DISTRIBUTE_INTO(X, 3)    +\
+            HELPER_DISTRIBUTE_INTO(Y, 4)    +\
+            ALU_MUL()                       +\
+            MICRO_SETVALUE(Z, 0)            +\
+            HELPER_DISTRIBUTE_INTO(5, Z)
 
 def COMMAND_DIV(X, Y, Z):
     """(Whole number) Divide X by Y and put result into Z"""
@@ -135,7 +147,11 @@ def ALU_SUB():
 
 def ALU_MUL():
     """Multiply X and Y and put into C"""
-    pass
+    return  FORMULATE_FOR_LOOP(3, 1,
+            "".join([
+                COMMAND_CPY(4, 5)
+            ]))                         +\
+            MICRO_SETVALUE(4, 0)
 
 def ALU_DIV():
     """Divide X by Y and put into C"""

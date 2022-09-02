@@ -1,4 +1,5 @@
 from instruction_rewrite import *
+testctr = 1
 
 def optimize(program):
     new = program
@@ -13,7 +14,7 @@ def optimize(program):
 
     return new
 
-def e(a, b, d):
+def e(d):
     (i:=0,s:=[],c:=0,p:=0,f:=[0])
     while i<len(d):
         c=d[i]
@@ -33,71 +34,121 @@ def e(a, b, d):
                     elif d[i]=="]":c-=1
         if c=="]":i=s.pop()
         i+=1
-    return (f[a:b])
+    return f
 
-def assert_eq(i, a, b):
+def assert_eq(i, b, a):
     if a != b:
         raise Exception(f"Failed test {i}\nShould be {a}\nBut was   {b}")
     else:
         print(f"Passed test {i}")
 
-def TESTS():
-    t1 = "".join([
+def test(expected_result, instructions):
+    global testctr
+    
+    assert_eq(testctr, e(optimize(instructions)), expected_result)
+
+    testctr+=1
+
+def RUN_TESTS():
+
+    # Test setvalue
+    test([0,0,0,5,0,5],
+    "".join([
         MICRO_SETVALUE(5,5),
         MICRO_SETVALUE(3,5)
-        ])
-    r1 = e(0, 6, optimize(t1))
-    s1 = [0,0,0,5,0,5]
-    assert_eq(1, s1, r1)
+    ]))
 
-    t2 = "".join([
+    # Test decrement
+    test([0,0,5],
+    "".join([
         MICRO_SETVALUE(2,10),
         MICRO_DECREMENT(2, 5)
-        ])
-    r2 = e(0,3, optimize(t2))
-    s2 = [0,0,5]
-    assert_eq(2, s2, r2)
+    ]))
 
-    t3 = "".join([
+    # test for-loop
+    test([0, 0, 0, 0, 25],
+    "".join([
         MICRO_SETVALUE(1,5),
         FORMULATE_FOR_LOOP(1,1, MICRO_INCREMENT(4, 5))
-        ])
-    r3 = e(0, 5, optimize(t3))
-    s3 = [0, 0, 0, 0, 25]
-    assert_eq(3, s3, r3)
+    ]))
 
-    t4 = "".join([
+    # Test distribution over multiple
+    test([10, 0, 0, 0, 10],
+    "".join([
         MICRO_SETVALUE(2, 10),
         HELPER_DISTRIBUTE_INTO(2, 0, 4)
-        ])
-    r4 = e(0, 5, optimize(t4))
-    s4 = [10, 0, 0, 0, 10]
-    assert_eq(4, s4, r4)
+    ]))
 
-    t5 = MICRO_SETVALUE(0, 10) + COMMAND_MOV(0, 1)
-    r5 = e(0,2,optimize(t5))
-    s5 = [0, 10]
-    assert_eq(5, s5, r5)
+    # Test move
+    test([0,10],"".join([
+        MICRO_SETVALUE(0, 10),
+        COMMAND_MOV(0, 1)
+    ]))
 
-    t6 = MICRO_SETVALUE(5, 10) + COMMAND_CPY(5, 7)
-    r6 = e(0, 8, optimize(t6))
-    s6 = [0,0,0,0,0,10,0,10]
-    assert_eq(6, s6, r6)
+    # Test copy
+    test([0,0,0,0,0,10,0,10],
+    "".join([
+        MICRO_SETVALUE(5, 10),
+        COMMAND_CPY(5, 7)
+    ]))
 
-    t7 = COMMAND_SET(3, 4) + COMMAND_SET(4, 5) + ALU_ADD()
-    r7 = e(0,6,optimize(t7))
-    s7 = [0,0,0,0,0,9]
-    assert_eq(7, s7, r7)
+    # test alu add
+    test([0,0,0,0,0,9],
+    "".join([
+        COMMAND_SET(3, 4),
+        COMMAND_SET(4, 5),
+        ALU_ADD()
+    ]))
 
-    t8 = COMMAND_SET(3, 9) + COMMAND_SET(4, 5) + ALU_SUB()
-    r8 = e(0,6,optimize(t8))
-    s8 = [0,0,0,0,0,4]
-    assert_eq(8, s8, r8)
+    # Test alu sub
+    test([0,0,0,0,0,4],
+    "".join([
+        COMMAND_SET(3, 9),
+        COMMAND_SET(4, 5),
+        ALU_SUB()
+    ]))
+
+    # Test command add
+    test([0,0,0,0,0,0,0,0,12],
+    "".join([
+        COMMAND_SET(6, 4),
+        COMMAND_SET(7, 8),
+        COMMAND_ADD(6, 7, 8)
+    ]))
+
+    # Test alu multiply
+    test([0,0,0,0,0,12],
+    "".join([
+        COMMAND_SET(3, 3),
+        COMMAND_SET(4, 4),
+        ALU_MUL()
+    ]))
+
+    # Test command sub
+    test([0,0,0,0,0,0,0,0,11],
+    "".join([
+        COMMAND_SET(6, 21),
+        COMMAND_SET(7, 10),
+        COMMAND_SUB(6, 7, 8)
+    ]))
+
+    # Test command mul
+    test([0,0,0,0,0,0,0,0,21],
+    "".join([
+        COMMAND_SET(6, 3),
+        COMMAND_SET(7, 7),
+        COMMAND_SUB(6, 7, 8)
+    ]))
+
+    # test([],
+    # "".join([
+
+    # ]))
 
 
 def main():
 
-    TESTS()
+    RUN_TESTS()
 
 if __name__ == '__main__':
     main()
