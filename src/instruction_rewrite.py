@@ -167,7 +167,13 @@ def ALU_CMP_A_GREATER_THAN_B():
 
 def ALU_CMP_A_EQUALS_B():
     """Checks if A is equal to B, putting result into D"""
-    return 
+    return  FORMULATE_FOR_LOOP(3, 1, MICRO_DECREMENT(4, 1)) +\
+            MICRO_INCREMENT(5, 1)                           +\
+            FORMULATE_FOR_LOOP(4, 0,
+            "".join([
+                MICRO_SETVALUE(4, 0),
+                MICRO_DECREMENT(5, 1)
+            ]))
 
 
 # ------------------------------------------------------------------------------------------------------------
