@@ -1,6 +1,6 @@
 .data
     // Declare variable
-    C;
+    C
 
     // Set integers
     A = 10
@@ -12,16 +12,16 @@
 
 .funcs
 
-    // Write functions
-    foo {
-        MUL A B C;   // Multiply A with B, put into C
+    // Write functions //
+    foo{
+        MUL A B C  // Multiply A with B, put into C
     }
 
 .code
 
-    SET A 1;     // Set A to 1
-    ADD A B C;   // Add A to B and put into C
+    SET A 1     // Set A to 1
+    ADD A B C   // Add A to B and put into C
     
-    foo;        // Run funtion 'foo'
+    foo        // Run funtion 'foo'
     
-    PRINT Y;
+    PRINT Y
